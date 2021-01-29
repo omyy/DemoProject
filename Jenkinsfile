@@ -5,16 +5,19 @@ pipeline {
 	stages{
 
 		
-			stage('Checkout'){
-        		steps{
-					script {
-						checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/omyy/DemoProject.git']]])
-						
-						//pom = readMavenPom file: 'pom.xml'
-						echo "Check out done---> "+git --version// + pom.version
-					}
-        		}
-        	}
-			
+		stage('Example'){
+			input {
+				message "Should we continue?"
+				ok "Yes, we should."
+				submitter "alice,bob"
+				parameters {
+					string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+				}
+			}
+			steps {
+				echo "Hello, ${PERSON}, nice to meet you."
+			}
 		}
+			
 	}
+}
